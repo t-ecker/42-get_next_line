@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tecker <tecker@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tomecker <tomecker@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:55:43 by tecker            #+#    #+#             */
-/*   Updated: 2024/04/09 14:24:05 by tecker           ###   ########.fr       */
+/*   Updated: 2024/11/19 23:57:17 by tomecker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	*read_from_file(int fd, char *rest)
 {
 	char	*buffer;
 	int		bytesread;
+	char	*tmp;
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (buffer == NULL)
@@ -59,7 +60,9 @@ char	*read_from_file(int fd, char *rest)
 			return (free(buffer), NULL);
 		}
 		buffer[bytesread] = '\0';
+		tmp = rest;
 		rest = ft_strjoin(rest, buffer);
+		free(tmp);
 		if (rest == NULL)
 			return (free(buffer), NULL);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tecker <tecker@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tomecker <tomecker@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:15:59 by tecker            #+#    #+#             */
-/*   Updated: 2024/04/02 15:15:44 by tecker           ###   ########.fr       */
+/*   Updated: 2024/11/19 23:59:27 by tomecker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(char const *src)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len1;
 	size_t	len2;
@@ -36,7 +36,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	len2 = ft_strlen(s2);
 	ptr = malloc(sizeof(char) * (len1 + len2 + 1));
 	if (ptr == NULL)
-		return (free(s1), NULL);
+		return (NULL);
 	while (i < len1)
 	{
 		ptr[i] = s1[i];
@@ -48,7 +48,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	ptr[i + j] = '\0';
-	return (free(s1), ptr);
+	return (ptr);
 }
 
 char	*ft_strchr(const char *src, int c)
@@ -85,7 +85,7 @@ char	*ft_strdup(char *s1)
 	return (ptr);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*ptr;
 	size_t	i;
