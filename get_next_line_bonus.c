@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tomecker <tomecker@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 16:55:43 by tecker            #+#    #+#             */
-/*   Updated: 2024/12/21 14:13:53 by tomecker         ###   ########.fr       */
+/*   Updated: 2024/12/26 15:02:15 by tomecker         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*find_new_rest(char *c)
 {
@@ -73,43 +73,53 @@ char	*read_from_file(int fd, char *rest)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*rest;
+	static char	*rest[FD_OPEN];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_OPEN)
 		return (NULL);
-	if (rest == NULL)
-		rest = ft_strdup("");
-	if (rest == NULL)
+	if (rest[fd] == NULL)
+		rest[fd] = ft_strdup("");
+	if (rest[fd] == NULL)
 		return (NULL);
-	rest = read_from_file(fd, rest);
-	if (rest == NULL)
+	rest[fd] = read_from_file(fd, rest[fd]);
+	if (rest[fd] == NULL)
 		return (NULL);
-	line = search_for_nl(rest);
+	line = search_for_nl(rest[fd]);
 	if (!line)
 	{
-		if (rest != NULL)
+		if (rest[fd] != NULL)
 		{
-			free(rest);
-			rest = NULL;
+			free(rest[fd]);
+			rest[fd] = NULL;
 		}
 		return (NULL);
 	}
-	rest = find_new_rest(rest);
+	rest[fd] = find_new_rest(rest[fd]);
 	return (line);
 }
 
 // #include <stdio.h>
 // int main(void)
 // {
-//     int fd;
+//     int fd[3];
 //     char *str;
-//     fd = open("test1.txt", O_RDONLY);
-// 	for (int i = 0; i < 6; i++)
+//     fd[0] = open("test1.txt", O_RDONLY);
+//     fd[1] = open("test2.txt", O_RDONLY);
+//     fd[2] = open("test3.txt", O_RDONLY);
+// 	for (int i = 0; i < 3; i++)
 // 	{
-// 		str = get_next_line(fd);
-// 		printf("output:	%s|", str);
+// 		str = get_next_line(fd[0]);
+// 		printf("output fd[0]:	%s", str);
+//         free (str);
+// 		str = get_next_line(fd[1]);
+// 		printf("output fd[1]:	%s", str);
+//         free (str);
+// 		str = get_next_line(fd[2]);
+// 		printf("output fd[2]:	%s\n", str);
 //         free (str);
 // 	}
-//     close (fd);
+//     close (fd[0]);
+//     close (fd[1]);
+//     close (fd[2]);
 //     return (0);
 // }
